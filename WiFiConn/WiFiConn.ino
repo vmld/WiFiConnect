@@ -31,13 +31,14 @@ void setup() {
     Serial.begin(115200); // Instrução para inicializar o Serial, utilizaremos apenas para log no monitor.
     WiFi.mode(WIFI_STA);  // configurando o modo de operação do WiFi como estação
     WiFi.disconnect();    // desconecta do access point caso ele já esteja conectado
-    
-    if (WiFi_scanSS() == true){
-        WiFi.begin(aSSID[nnWiFi], aSSPW[nnWiFi]);
-        while (WiFi.status() != WL_CONNECTED) { delay(1000); Serial.println(F("Connecting to WiFi..")); }
-        Serial.print("ID >"+String(aSSID[nnWiFi])+"<  ");
-        Serial.println(WiFi.localIP());
-    }
+    WiFi_ScanConn();
+
+//    if (WiFi_scanSS() == true){
+//        WiFi.begin(aSSID[nnWiFi], aSSPW[nnWiFi]);
+//        while (WiFi.status() != WL_CONNECTED) { delay(1000); Serial.println(F("Connecting to WiFi..")); }
+//        Serial.print("ID >"+String(aSSID[nnWiFi])+"<  ");
+//        Serial.println(WiFi.localIP());
+//    }
 }
 //============================================================================
 void loop() {

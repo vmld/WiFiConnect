@@ -169,8 +169,6 @@ void printDayAndDate(uint16_t x, uint16_t y, uint32_t dateTime, uint8_t textSize
   
   time_t tt = dateTime; // dateTime is epoch timestamp
   if ( (Flag_Date==false) or (hour(tt)==0 and minute(tt)==0) ){
-//String daysOfWeek[7] = {"Domingo", "2a.Feira", "3a.Feira", "4a.Feira", "5a.Feira", "6a.Feira", "Sabado"};
-//String monthNames[12] = {"Janeiro ", "Fevereiro ", "Março ", "Abril ", "Maio ", "Junho ", "Julho ", "Agosto ", "Setembro ", "Outubro ", "Novembro ", "Dezembro "};
     String dayName = daysOfWeek[weekday(tt) - 1];
     String monthName = monthNames[month(tt) - 1];
 
@@ -199,26 +197,26 @@ void initializeLCD() {
                                   //  but you have to change positions of every element, 
                                   //  because for different font there are different text sizes
 }
-//=====================================================================
-uint32_t readTimeDate() {
-  /*  This function is used to read the time form NTP API
-   *  Arguments:
-   *  none
-   *  Returns: epoch timestamp from NTP API
-   */
-   
-  while (!timeClient.update()) {
-    timeClient.forceUpdate();
-  }
-  return timeClient.getEpochTime();
-}
-//=====================================================================
-void updateTime() {
-  /*  This function is used to dusplay time on the screen */
-  uint32_t dateTime = readTimeDate();
- 
-  dsply.fillRect(0, 72, 240, 40, TFT_BLACK); 
-  printDayAndDate(0, 20, dateTime, 2, 2); // day name and long date
-  printTime(0, 72, dateTime, 4, 2);
-
-}
+////=====================================================================
+//uint32_t readTimeDate() {
+//  /*  This function is used to read the time form NTP API
+//   *  Arguments:
+//   *  none
+//   *  Returns: epoch timestamp from NTP API
+//   */
+//   
+//  while (!timeClient.update()) {
+//    timeClient.forceUpdate();
+//  }
+//  return timeClient.getEpochTime();
+//}
+////=====================================================================
+//void updateTime() {
+//  /*  This function is used to dusplay time on the screen */
+//  uint32_t dateTime = readTimeDate();
+// 
+//  dsply.fillRect(0, 72, 240, 40, TFT_BLACK); 
+//  printDayAndDate(0, 20, dateTime, 2, 2); // day name and long date
+//  printTime(0, 72, dateTime, 4, 2);
+//
+//}

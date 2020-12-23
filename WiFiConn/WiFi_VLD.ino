@@ -1,5 +1,13 @@
 int intensidadeSinal = -9999;
 //============================================================================
+void WiFi_ScanConn(){
+    if (WiFi_scanSS() == true){
+        WiFi.begin(aSSID[nnWiFi], aSSPW[nnWiFi]);
+        while (WiFi.status() != WL_CONNECTED) { delay(1000); Serial.println(F("Connecting to WiFi..")); }
+        Serial.print("ID >"+String(aSSID[nnWiFi])+"<  ");
+        Serial.println(WiFi.localIP());
+    }
+}
 bool WiFi_scanSS(){
     int n = WiFi.scanNetworks();
     bool zBool = false;
@@ -44,4 +52,27 @@ bool WiFi_chkSS(String xID,int xSI ){
         }
     }
     return xBool;
+}
+//=====================================================================
+uint32_t readTimeDate() {
+  /*  This function is used to read the time form NTP API
+   *  Arguments:
+   *  none
+   *  Returns: epoch timestamp from NTP API
+   */
+   
+  while (!timeClient.update()) {
+    timeClient.forceUpdate();
+  }
+  return timeClient.getEpochTime();
+}
+//=====================================================================
+void updateTime() {
+  /*  This function is used to dusplay time on the screen */
+  uint32_t dateTime = readTimeDate();
+ 
+  dsply.fillRect(0, 72, 240, 40, TFT_BLACK); 
+  printDayAndDate(0, 20, dateTime, 2, 2); // day name and long date
+  printTime(0, 72, dateTime, 4, 2);
+
 }

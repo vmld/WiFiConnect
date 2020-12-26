@@ -1,6 +1,12 @@
+#include "WiFi.h"
+
+WiFiClient client;
+int nnWiFi = -1;
 int intensidadeSinal = -9999;
 //============================================================================
 void WiFi_ScanConn(){
+    WiFi.mode(WIFI_STA);  // configurando o modo de operação do WiFi como estação
+    WiFi.disconnect();    // desconecta do access point caso ele já esteja conectado
     if (WiFi_scanSS() == true){
         WiFi.begin(aSSID[nnWiFi], aSSPW[nnWiFi]);
         while (WiFi.status() != WL_CONNECTED) { delay(1000); Serial.println(F("Connecting to WiFi..")); }
@@ -52,27 +58,4 @@ bool WiFi_chkSS(String xID,int xSI ){
         }
     }
     return xBool;
-}
-//=====================================================================
-uint32_t readTimeDate() {
-  /*  This function is used to read the time form NTP API
-   *  Arguments:
-   *  none
-   *  Returns: epoch timestamp from NTP API
-   */
-   
-  while (!timeClient.update()) {
-    timeClient.forceUpdate();
-  }
-  return timeClient.getEpochTime();
-}
-//=====================================================================
-void updateTime() {
-  /*  This function is used to dusplay time on the screen */
-  uint32_t dateTime = readTimeDate();
- 
-  dsply.fillRect(0, 72, 240, 40, TFT_BLACK); 
-  printDayAndDate(0, 20, dateTime, 2, 2); // day name and long date
-  printTime(0, 72, dateTime, 4, 2);
-
 }

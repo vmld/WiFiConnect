@@ -1,14 +1,7 @@
 #include "SPI.h"          // for communication with the TFT LCD screen
 #include "TFT_eSPI.h"     // for TFT LCD screen register
-#include <TimeLib.h>      // for converting timestamps
-#include <NTPClient.h>    // for accessing NTP real time API data
 
-
-//..........................
-String daysOfWeek[7] = {"Domingo", "2a.Feira", "3a.Feira", "4a.Feira", "5a.Feira", "6a.Feira", "Sabado"};
-String monthNames[12] = {"Janeiro ", "Fevereiro ", "Março ", "Abril ", "Maio ", "Junho ", "Julho ", "Agosto ", "Setembro ", "Outubro ", "Novembro ", "Dezembro "};
-bool Flag_Date = false;
-
+//=============================================================================== checkZero
 void printText(int x, int y, String text, uint8_t textSize = 1, uint8_t textAllign = 1, uint8_t lineLength = 239) {
   /*  This function is used for displaying text on the screen
    *  Arguments:
@@ -122,63 +115,6 @@ void printText(int x, int y, String text, uint8_t textSize = 1, uint8_t textAlli
   }
 }
 
-//=============================================================================== checkZero
-String checkZero(uint32_t number) {
-  /*  This function is used to check if the unsigned integer number is a single digit, and to add zero before single digit number
-   *  Argument:
-   *  - number      unsigned ingeger number
-   *  Returns:  String made from unsigned integer number
-   */
-   
-  char buf[10];
-  if (number < 10) {
-    return "0" + String(number);
-  }
-  else {
-    return String(number);
-  }
-}
-//=====================================================================
-void printTime(uint16_t x, uint16_t y, uint32_t dateTime, uint8_t textSize, uint8_t textAlign, uint8_t lineLenght = 239) {
-  /*  This function is used to print Time from epoch timestamp
-   *  Arguments:
-   *  - X           positon of the cursor
-   *  - Y           positon of the cursor
-   *  - dateTime    epoch timestamp (unix timestamp)
-   *  - textSize    text size can be one of these values 1, 2, 3, 4, 5
-   *  - textAllign  text allign can be 1 - left align, 2 - center and 3 - right align
-   *  - lineLenght  this should be used for line lenght of text, but does not works as shoud - TODO  
-   */
-   
-  time_t tt = dateTime; // dateTime is epoch timestamp
-  String mytime = String(checkZero(hour(tt))) + ":" + String(checkZero(minute(tt))) + ":" + String(checkZero(second(tt)));
-  printText(x, y, mytime, textSize, textAlign, lineLenght);
-}
-//=====================================================================
-void printDayAndDate(uint16_t x, uint16_t y, uint32_t dateTime, uint8_t textSize, uint8_t textAlign, uint8_t lineLenght = 239) {
-  /*  This function is used to print date from epoch timestamp
-   *  Arguments:
-   *  - X           positon of the cursor
-   *  - Y           positon of the cursor
-   *  - dateTime    epoch timestamp (unix timestamp)
-   *  - textSize    text size can be one of these values 1, 2, 3, 4, 5
-   *  - textAllign  text allign can be 1 - left align, 2 - center and 3 - right align
-   *  - lineLenght  this should be used for line lenght of text, but does not works as shoud - TODO  
-   */
-   
-  
-  time_t tt = dateTime; // dateTime is epoch timestamp
-  if ( (Flag_Date==false) or (hour(tt)==0 and minute(tt)==0) ){
-    String dayName = daysOfWeek[weekday(tt) - 1];
-    String monthName = monthNames[month(tt) - 1];
-
-    dsply.fillRect(0, 0, 240, 65, TFT_BLACK); 
-    printText(x, y + 0, dayName, textSize , textAlign);
-    String date = String(checkZero(day(tt))) + " " + monthName + String(year(tt));
-    printText(x, y + 20, date, textSize, textAlign);
-    Flag_Date = true;
-  }
-}
 //================================================
 void initializeLCD() {
   /*  This function is used to turn ON the LCD and to initialize dsply object */
@@ -197,26 +133,3 @@ void initializeLCD() {
                                   //  but you have to change positions of every element, 
                                   //  because for different font there are different text sizes
 }
-////=====================================================================
-//uint32_t readTimeDate() {
-//  /*  This function is used to read the time form NTP API
-//   *  Arguments:
-//   *  none
-//   *  Returns: epoch timestamp from NTP API
-//   */
-//   
-//  while (!timeClient.update()) {
-//    timeClient.forceUpdate();
-//  }
-//  return timeClient.getEpochTime();
-//}
-////=====================================================================
-//void updateTime() {
-//  /*  This function is used to dusplay time on the screen */
-//  uint32_t dateTime = readTimeDate();
-// 
-//  dsply.fillRect(0, 72, 240, 40, TFT_BLACK); 
-//  printDayAndDate(0, 20, dateTime, 2, 2); // day name and long date
-//  printTime(0, 72, dateTime, 4, 2);
-//
-//}

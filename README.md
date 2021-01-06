@@ -5,3 +5,4 @@
  - Dia da Semana
  - Data, dia Mes ano
  - Hora, actualizada ao segundo.
+

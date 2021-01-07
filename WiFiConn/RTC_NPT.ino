@@ -15,6 +15,7 @@ const int   daylightOffset_sec = 3600;
 bool Flag_Date = false;
 String monthNames[12] = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
 String daysOfWeek[9] = {"Domingo", "2a.Feira", "3a.Feira", "4a.Feira", "5a.Feira", "6a.Feira", "Sabado"};
+//http://www.cplusplus.com/reference/ctime/strftime/
 //========================================================
 //............................. 
 void iniLocalTime()
@@ -49,14 +50,14 @@ void readTimeDate() {
     char xDSem[10];
     sprintf(xDSem,"%s", daysOfWeek[data.tm_wday]);
     printText(0, 20, xDSem, 2, 2, 239); 
-    Serial.print( "Dia Semana : " );
-    Serial.println( xDSem );
     
     //............................. Display TFT - Data
     char xDate[20];
     sprintf(xDate,"%2d %s %2d", data.tm_mday, monthNames[data.tm_mon],data.tm_year+1900);
     printText(0, 40, xDate, 2, 2, 239); 
-    Serial.print( "Data : " );
+
+    Serial.print( xDSem );
+    Serial.print( ", " );
     Serial.println( xDate );
 
     Flag_Date = true;
